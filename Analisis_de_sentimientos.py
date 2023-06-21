@@ -17,6 +17,7 @@ THRESHOLD = 1.083274218344552
 MATRIZ_EMOCIONES_PERFECTA = '{ "emotion": {"sadness" : 0.005441, "joy" : 0.997533, "fear" : 0.009288, "disgust" : 0.001843, "anger" : 0.002108}}'
 MATRIZ_PRUEBA = '{ "emotion": {"sadness" : 0.523502, "joy" : 0.060197, "fear" : 0.034915, "disgust" : 0.124649, "anger" : 0.257796}}'
 
+0.05441 + 0.523502
 #CREACIÓN DE FUNCIONES
 #FUNCION PRE-PROCESAR IMAGEN
 def preprocesar_imagen(url):
@@ -60,34 +61,39 @@ def traducir_texto(text):
         "X-RapidAPI-Key": os.environ.get('NLP_API_KEY'),
         "X-RapidAPI-Host": os.environ.get('NLP_API_HOST')
     }
-    querystring = {"text":text,"to":"en"}
+    querystring = {"text": text, "to": "en"}
     response = requests.get(url, headers=headers, params=querystring)
+    response_data = response.json()
 
-    return response.json()
+    if response.status_code == 200:
+        trad = response_data['translated_text']['en']
+        return trad
+    else:
+        return None
 
-#FUNCION PROMEDIO DE 2 MATRICES
-def promedio(matriz1, matriz2):
-    #Obtener las dimensiones de ambas matrices
-    fil = len(matriz1)
-    col = len(matriz1)
-    #Creamos la matriz promedio
-    matriz_promedio = [[0] * col for _ in range(fil)]    
-    #Multiplicación de matrices
-    for i in range(fil):
-        for j in range (col):
-            promedio = (matriz1[i][j] + matriz2[i][j]) / 2
-            matriz_promedio[i][j] = promedio
-    return matriz_promedio
+#FUNCION PROMEDIO ENTRE 2 JSON
+def prom(json1,json2):
+    data1 = json.loads(json1)
+    data2 = json.loads(json2)
 
+    x = list(data1['emotion'].values())
+    y = list(data2['emotion'].values())
+    
+    if len(x) != len(y):
+        raise ValueError("Las matrices deben tener la misma cantidad de valores")
+
+    resultado = [(xi + yi) / 2 for xi, yi in zip(x, y)]
+
+    return resultado
 
 #PRUEBAS
 #COMENTAR=> CTRL K+CTRL C
 #DESCOMENTAR=> CTRL K + CTRK U
 # print(preprocesar_imagen('https://pbs.twimg.com/media/FzBxSvfaIAAdjyf?format=jpg&name=4096x4096'))
 # print(extraer_emociones("@VirginAmerica and it's a really big bad thing about it"))
-# print(calcular_ed(MATRIZ_PRUEBA,MATRIZ_EMOCIONES_PERFECTA))
+#print(calcular_ed(MATRIZ_PRUEBA,MATRIZ_EMOCIONES_PERFECTA))
 # print(clasificar(1.1081969079,THRESHOLD))
-# print(traducir_texto('Tome una piña colada y acabe ebrio'))
+#print(traducir_texto('Tome una piña colada y acabe ebrio'))
 
 # matriz1 = [[1, 2, 3],
 #            [4, 5, 6]]
