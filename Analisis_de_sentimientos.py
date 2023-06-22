@@ -17,13 +17,18 @@ THRESHOLD = 1.083274218344552
 MATRIZ_EMOCIONES_PERFECTA = '{ "emotion": {"sadness" : 0.005441, "joy" : 0.997533, "fear" : 0.009288, "disgust" : 0.001843, "anger" : 0.002108}}'
 MATRIZ_PRUEBA = '{ "emotion": {"sadness" : 0.523502, "joy" : 0.060197, "fear" : 0.034915, "disgust" : 0.124649, "anger" : 0.257796}}'
 
-0.05441 + 0.523502
 #CREACIÓN DE FUNCIONES
+
 #FUNCION PRE-PROCESAR IMAGEN
 def preprocesar_imagen(url):
     response = requests.get('https://api.imagga.com/v2/tags?image_url=%s' % url,
                             auth=(os.environ.get('IMAGGA_API_KEY'), os.environ.get('IMAGGA_API_SECRET')))
-    return response.json()
+    json_data = response.json()
+    
+    tags = json_data['result']['tags']
+    filtered_tags = [tag['tag']['en'] for tag in tags if tag['confidence'] > 20]
+    
+    return filtered_tags
 
 #FUNCION EXTRAER EMCIONES (IBM-WATSON API)
 def extraer_emociones(texto):
