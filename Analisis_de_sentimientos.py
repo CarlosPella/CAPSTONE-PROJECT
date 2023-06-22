@@ -49,13 +49,15 @@ def extraer_emociones(texto):
     return json.loads(result)['emotion']['document']
 
 #FUNCION CALCULAR VALOR ED
-def calcular_ed(json1,json2):
-    data1 = json.loads(json1)
-    data2 = json.loads(json2)
+def calcular_ed(matriz1,matriz2):
+    #data1 = json.loads(json1)
+    #data2 = json.loads(json2)
 
-    x = list(data1['emotion'].values())
-    y = list(data2['emotion'].values())
-    print(x)
+    #x = list(data1['emotion'].values())
+    #y = list(data2['emotion'].values())
+    x = matriz1
+    y = matriz2
+    #print(x)
 
     if len(x) != len(y):
         raise ValueError("Las matrices deben tener la misma longitud")
@@ -100,15 +102,61 @@ def prom(json1,json2):
 
     return resultado
 
+def hay_valor(cell):
+    return pd.notnull(cell)
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--file', type=str, default=r'recursos\Tweets.xlsx', help=r'Coloca la dirección del archivo de datos.Ejm:C:\Users\Ejemplo.xlsx')
     parser.add_argument('--columna_texto', type=str, default='text', help=r'Coloca el nombre de la columna donde se encuentra el texto del tweet')
     parser.add_argument('--columna_img', type=str, default='img_url', help=r'Coloca el nombre de la columna donde se encuentra la imagen del tweet')
     args = parser.parse_args()
-    df = pd.read_excel(args.file);
-    sys.stdout.write(str(df[args.columna_texto]))
-    sys.stdout.write(str(df[args.columna_img]))
+    df = pd.read_excel(args.file, usecols=[args.columna_texto,args.columna_img]);
+    lista = df.to_numpy().tolist()
+    to_excel = []
+    for row in lista:
+        text = False
+        img_text = False
+        emotions_text = False
+        emotions_img = False
+
+        if hay_valor(row[0]):
+            text = traducir_texto(row[0])
+            emotions_text = extraer_emociones(text)
+
+        if hay_valor(row[1]):
+            img_text = preprocesar_imagen(row[1])
+            emotions_img = extraer_emociones(img_text[0] + img_text[1] + img_text[2] + img_text[3] + img_text[4] + img_text[5])
+            print(emotions_img)
+        
+
+        matriz_emotion_text = emotions_text
+        matriz_resultante = list(matriz_emotion_text['emotion'].values())
+        if emotions_text != False and emotions_img != False:
+            matriz_resultante = prom(emotions_text,emotions_img)
+
+        matriz_emociones_perfecta = json.loads(MATRIZ_EMOCIONES_PERFECTA)
+        lista_emociones_pefecta = list(matriz_emociones_perfecta['emotion'].values())
+        
+        print(lista_emociones_pefecta)
+        print(matriz_resultante)
+        ed = calcular_ed(matriz_resultante,lista_emociones_pefecta)
+        
+        clasificador = clasificar(ed,THRESHOLD)
+        row.append(matriz_resultante)
+        row.append(ed)
+        row.append(clasificador)
+        to_excel.append(row)
+        print(row)
+
+    
+    headers = ['texto', 'imagen_url', 'array emociones', 'ed', 'clasificador']
+
+    df = pd.DataFrame(to_excel, columns=headers)
+    df.to_excel(r'recursos\output.xlsx', index=False)
+    print(to_excel)
+    
+    #sys.stdout.write(str(df[args.columna_img]))
 
 
 if __name__=='__main__':
@@ -118,7 +166,7 @@ if __name__=='__main__':
 #COMENTAR=> CTRL K+CTRL C
 #DESCOMENTAR=> CTRL K + CTRK U
 #print(preprocesar_imagen('https://pbs.twimg.com/media/FzBxSvfaIAAdjyf?format=jpg&name=4096x4096'))
-#print(extraer_emociones("@VirginAmerica and it's a really big bad thing about it"))
+#print(extraer_emociones("@VirginAmerica plus you've added commercials to the experience... tacky."))
 #print(calcular_ed(MATRIZ_PRUEBA,MATRIZ_EMOCIONES_PERFECTA))
 # print(clasificar(1.1081969079,THRESHOLD))
 #print(traducir_texto('Tome una piña colada y acabe ebrio'))
