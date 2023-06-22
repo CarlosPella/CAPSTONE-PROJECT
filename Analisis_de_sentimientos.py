@@ -10,6 +10,8 @@ from ibm_watson.natural_language_understanding_v1 \
 import Features, EmotionOptions
 from functools import reduce
 from math import sqrt
+import argparse
+import sys
 
 #DATOS PREDEFINIDOS
 load_dotenv()
@@ -97,6 +99,20 @@ def prom(json1,json2):
     resultado = [(xi + yi) / 2 for xi, yi in zip(x, y)]
 
     return resultado
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--file', type=str, default=r'recursos\Tweets.xlsx', help=r'Coloca la dirección del archivo de datos.Ejm:C:\Users\Ejemplo.xlsx')
+    parser.add_argument('--columna_texto', type=str, default='text', help=r'Coloca el nombre de la columna donde se encuentra el texto del tweet')
+    parser.add_argument('--columna_img', type=str, default='img_url', help=r'Coloca el nombre de la columna donde se encuentra la imagen del tweet')
+    args = parser.parse_args()
+    df = pd.read_excel(args.file);
+    sys.stdout.write(str(df[args.columna_texto]))
+    sys.stdout.write(str(df[args.columna_img]))
+
+
+if __name__=='__main__':
+    main()
 
 #PRUEBAS
 #COMENTAR=> CTRL K+CTRL C
