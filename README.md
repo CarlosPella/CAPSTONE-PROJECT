@@ -7,7 +7,7 @@ Pasos para la instalación:
 3. Generar las credenciales de las siguientes APIS
 	- IMAGGA
 	- NLP
-	-IBM-CLOUD
+	- IBM-CLOUD
 5. Crear entorno virtual en la versión Python 3.10.11
 6. Entrar al entorno virtual
 7. Instalaciones desde el prompt
