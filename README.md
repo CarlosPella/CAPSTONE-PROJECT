@@ -4,9 +4,13 @@ ANÁLISIS DE SENTIMIENTOS EN LA COMUNIDAD DE TWITTER Y SU IMPACTO SOCIAL EN EL A
 Pasos para la instalación:
 1. Tener instalado un editor de código preferiblemente VSCODE
 2. Descargar Anaconda o miniconda
-3. Crear entorno virtual en la versión Python 3.10.11
-4. Entrar al entorno virtual
-5. Instalaciones desde el prompt
+3. Generar las credenciales de las siguientes APIS
+	IMAGGA
+	NLP
+	IBM-CLOUD
+4. Crear entorno virtual en la versión Python 3.10.11
+5. Entrar al entorno virtual
+6. Instalaciones desde el prompt
   -IBM-WATSON: 
 	pip install --upgrade ibm-watson 
   -PANDAS: 
@@ -17,10 +21,6 @@ Pasos para la instalación:
 	pip install python-dotenv 
   -LANGDETEC
 	pip install langdetec
-6. Generar las credenciales de las siguientes APIS
-	IMAGGA
-	NLP
-	IBM-CLOUD
 7. Modificar el archivo .env para las credenciales
 	(Recomendación, seguir la siguiente notación)
 	-IBM_API_KEY=YOUR_APPI_KEY 
