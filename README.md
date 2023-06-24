@@ -19,7 +19,7 @@ Pasos para la instalación:
 	- pip install openpyxl
   - PYTHON-DOTENV: 
 	- pip install python-dotenv 
-  - LANGDETEC
+  - LANGDETECT
 	- pip install langdetect
 8. Modificar el archivo .env para las credenciales
 	(Recomendación, seguir la siguiente notación)
