@@ -21,7 +21,8 @@ Pasos para la instalación:
 	- pip install python-dotenv 
   - LANGDETECT
 	- pip install langdetect
-8. Modificar el archivo .env para las credenciales
+8.Realizar el clone del repositiorio desde github: https://github.com/CarlosPella/CAPSTONE-PROJECT.git
+9. Modificar el archivo .env para las credenciales
 	(Recomendación, seguir la siguiente notación)
 	- IBM_API_KEY=YOUR_APPI_KEY 
 	- IBM_URL_SERVICE=YOUR_API_URL
@@ -29,8 +30,7 @@ Pasos para la instalación:
 	- IMAGGA_API_SECRET=YOUR_API_SECRET
 	- NLP_API_KEY=YOUR_APPI_KEY_3
 	- NLP_API_HOST=YOUR_API_HOST
-9. Realizar el clone del repositiorio desde github: https://github.com/CarlosPella/CAPSTONE-PROJECT.git
 
-Objetivo: 
+# Objetivo: 
 El objetivo de este proyecto es generar un análisis de sentimientos que considere el análisis de imágenes y textos, logrando así mejorar la precisión del modelo al poder contar con un contexto más claro de lo que los usuarios buscan expresar. 
 
