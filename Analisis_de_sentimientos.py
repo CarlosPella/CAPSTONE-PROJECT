@@ -13,6 +13,7 @@ from math import sqrt
 import argparse
 import sys
 from langdetect import detect
+import re
 
 #DATOS PREDEFINIDOS
 load_dotenv()
@@ -97,11 +98,18 @@ def hay_valor(cell):
 
 def detectar_idioma(text):
     idioma = detect(text)
+    return idioma
 
-    if idioma == 'en' :
-        print("Ta en ingles")
-    else:
-        print("No esta en ingles, esta en "+idioma)
+
+def eliminar_caracteres_especiales(texto):
+    # Expresión regular para encontrar caracteres especiales excepto los acentuados en inglés
+    patron = r'[^a-zA-Z0-9@:;\-\'\s]'
+    
+    # Reemplazar caracteres especiales con una cadena vacía
+    resultado = re.sub(patron, '', texto)
+    
+    return resultado
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -119,8 +127,11 @@ def main():
         emotions_img = False
 
         if hay_valor(row[0]):
-            text = traducir_texto(row[0])
-            emotions_text = extraer_emociones(text)
+            text = eliminar_caracteres_especiales(row[0])
+            texto_trad = text
+            if detectar_idioma(text)!='en':
+                texto_trad = traducir_texto(text)
+            emotions_text = extraer_emociones(texto_trad)
 
         if hay_valor(row[1]):
             img_text = preprocesar_imagen(row[1])
@@ -146,8 +157,11 @@ def main():
     df = pd.DataFrame(to_excel, columns=headers)
     df.to_excel(r'recursos\output.xlsx', index=False)
 
-# if __name__=='__main__':
-#     main()
+
+
+
+if __name__=='__main__':
+    main()
 
 #PRUEBAS
 #COMENTAR=> CTRL K+CTRL C
