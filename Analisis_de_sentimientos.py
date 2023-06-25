@@ -157,8 +157,5 @@ def main():
     df = pd.DataFrame(to_excel, columns=headers)
     df.to_excel(r'recursos\output.xlsx', index=False)
 
-
-
-
 if __name__=='__main__':
     main()
