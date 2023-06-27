@@ -34,3 +34,15 @@ Pasos para la instalación:
 # Objetivo: 
 El objetivo de este proyecto es generar un análisis de sentimientos que considere el análisis de imágenes y textos, logrando así mejorar la precisión del modelo al poder contar con un contexto más claro de lo que los usuarios buscan expresar. 
 
+# Entradas:
+Para la correcta funcionalidad de nuestro prototipo, es necesario que se cuente con un dataset en excel con una columna que contenga textos (referenciando los posts que se van a analizar) y una columna que contenga los URL de las imagenes que contenia dicho post. 
+
+# Salidas:
+Nuestro prototipo brinda las siguientes salidas al usuario, devuelve un archivo excel denominado por defecto output con las siguientes columnas:
+- Columna Texto: Texto analizado
+- Columna IMG_URL: Url de las imágenes analizadas
+- Array de emociones: Array de emociones obtenido por el análisis en conjunto de texto e imágen
+- Columna ED Total: Valor ED obtenido por el análisis en conjunto de texto e imágen.
+- Columna Clasificador Total: Clasificación del post (texto e imágen) en positivo y negativo.
+- Columna ED (Solo Texto): Valor ED obtenido por el análisis de solo texto.
+- Clasificador (Solo Texto): Clasificación del post (solo texto) en positivo y negativo.
